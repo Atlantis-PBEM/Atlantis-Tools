@@ -1,0 +1,42 @@
+These scripts were written by JT Traub for running the "Realms of
+the Arcane" and "Wyreth" Atlantis games on dragoncat.net.  They
+were stored in the files section of the atlantisdev development
+list, but now they're moving to github to be with the source.
+I (Stephen Baillie, stephen.baillie@gmail.com) have updated them
+to work with newer versions of Python, and have added a couple of
+things for my own use in the process - particularly making the
+timezones for game run be config variables rather than hardcoded,
+and expanding the range of game run frequencies supported.
+
+If you want to use this yourself, here's what I did to get it all
+up and running - you may like to do the same :-)
+
+* Created havilah.py (for my Havilah game) by copying default.cfg
+  and changing the appropriate variables therein
+* The scripts expect a number of directories and files to already
+  exist, while they will create others.  Working out which was
+  which was a bit of a process of trial and error, but here's
+  what worked for me:
+
+Created the gamedir directory (as defined in the config file)
+Built gameexe
+Created curdir and generated game.in and players.in inside it
+  by using the "new" option to gameexe
+Created the archdir and filedir directories
+created welcome.txt inside filedir - this is the message that
+  will be sent to new factions when they are created, and should
+  welcome them and refer then to any game-specific mailing lists
+Created the htmldir directory and put a rules.html file created
+  using gameexe's "genrules" option there, along with the
+  supporting css file.
+Created a "times" directory within htmldir
+
+Got email to be forwarded to the dispatcher script by making my
+  ~/.forward file contain:
+| "~/scripts/dispatcher.py havilah"
+
+Added a couple of cron jobs to run the reminder and runturn scripts:
+0 15 * * * ~/scripts/reminder.py havilah
+0 17 * * * ~/scripts/runturn.py havilah
+
+(modify as appropriate for your game run times and directory paths)
