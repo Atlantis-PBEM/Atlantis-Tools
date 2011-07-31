@@ -39,22 +39,13 @@ if config.copy_template:
                             if token[1] != 'NoAddress':
                                 newfile = config.curdir+'/orders.'+faction
                                 if not os.access(newfile, os.F_OK):
-                                    oldfile = config.prevdir+'/report.'+faction
+                                    oldfile = config.prevdir+'/template.'+faction
                                     print 'No orders for '+faction+'. Copying template'
                                     os.system('cp '+oldfile+' '+newfile)
                             break
                         line = players.readline()
         line = players.readline()
     
-
-#
-# first we create the Times
-#
-os.system(config.scriptdir + '/times.py '+cfgname)
-
-#
-# next we store away the previous turn
-#
 
 os.chdir(config.gamedir)
 
@@ -63,12 +54,20 @@ archivedir = ''
 doprevious = 1
 #doprevious = 0
 
+#
+# run the turn
+#
 os.chdir(config.curdir)
 
 val = os.system(config.gameexe + ' run')
 if val != 0:
     print "Error processing turn!!!!!!";
     sys.exit();
+
+#
+# then create the Times
+#
+os.system(config.scriptdir + '/times.py '+cfgname)
 
 #
 # we now prepare to send the mail
@@ -148,7 +147,7 @@ while line != '':
                     times = string.atoi(token[1])
                     if email != 'NoAddress':
                         sendscript.write('os.system('+cfgname+'.scriptdir + "')
-                        sendscript.write('/putturn.py '+cfgname+' \\"'+email+'\\" \\"'+config.gamename+' report for '+name+', '+turntext+'\\" report.'+faction)
+                        sendscript.write('/putturn.py '+cfgname+' \\"'+email+'\\" \\"'+config.gamename+' report for '+name+', '+turntext+'\\" report.'+faction+' template.'+faction)
                         sendscript.write('")\n')
                         if times:
                             sendscript.write('os.system('+cfgname+'.scriptdir + "')
@@ -180,6 +179,10 @@ try:
 except IOError:
     doprevious = 0
 
+#
+# next we store away the previous turn
+#
+
 if doprevious == 1:
     line = players.readline()
     while line != '':
@@ -193,8 +196,8 @@ if doprevious == 1:
 
     print 'Storing turn '+`turn`
 
-    archivedir = config.archdir + 'turn'+string.zfill(`turn`,5)
-    os.rename(config.prevdir , archivedir)
+    archivedir = 'turn'+string.zfill(`turn`,5)
+    os.rename(config.prevdir, config.archdir + archivedir)
     
 print "Rebuilding current directory."
 #
@@ -217,6 +220,7 @@ os.system(config.gameexe + ' mapunits >/dev/null')
 
 if archivedir != '':
     print "Archiving last turn."
+    os.chdir(config.archdir)
     os.system('tar -zcf "'+archivedir+'.tgz" "'+archivedir+'"')
 
 # I have marked this section out, as I will delete this only manually at first

@@ -383,9 +383,9 @@ elif commandtype == create:
     players.write('Password: '+spassword+'\n')
     players.write('Email: '+fromaddy+'\n')
     players.write('SendTimes: 1\n')
-    players.write('Template: short\n')
+    players.write('Template: long\n')
     players.close()
-    os.system(config.scriptdir+'/putmail.py '+cfgname+' "'+fromaddy+'" "Faction created" '+tfile)
+    # os.system(config.scriptdir+'/putmail.py '+cfgname+' "'+fromaddy+'" "Faction created" '+tfile)
     os.system(config.scriptdir+'/putmail.py '+cfgname+' '+config.admin+' "New Faction created" '+tfile)
     users = None;
     try:
@@ -395,7 +395,7 @@ elif commandtype == create:
     if users != None:
         users.write(fromaddy+' : |ECHOPOST|\n');
         users.close();
-    os.system(config.scriptdir+'/putmail.py '+cfgname+' "'+fromaddy+'" "Welcome message" '+config.filedir+'/welcome.txt')
+    os.system(config.scriptdir+'/putmail.py '+cfgname+' "'+fromaddy+'" "Welcome to '+config.gamename+'" '+config.filedir+'/welcome.txt')
 elif commandtype == diplo:
     source.close()
     units = open(config.curdir+'/units.txt', 'r')

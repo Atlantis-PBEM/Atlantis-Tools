@@ -24,7 +24,7 @@ import string
 # main process
 #
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 6:
     sys.exit('Wrong number of parameters called')
 
 cfgname = sys.argv[1];
@@ -33,6 +33,7 @@ config = __import__(cfgname);
 recipient = sys.argv[2]
 subject   = sys.argv[3]
 filename  = sys.argv[4]
+templatefilename  = sys.argv[5]
 
 fullsender = config.sender
 
@@ -40,6 +41,13 @@ try:
     bodyfile = open(filename, 'r')
 except IOError:
     sys.exit('File not found')
+
+try:
+    templatefile = open(templatefilename, 'r')
+    template = templatefile.read()
+    templatefile.close()
+except IOError:
+    template = ''
 
 try:
     turnfile = open(config.htmldir+'/turn.dat', 'r')
@@ -62,7 +70,7 @@ message = message + ';     '+gturndue+'\n\n'
 body = bodyfile.read()
 bodyfile.close()
 
-message = message+body
+message = message+body+template
 
 try:
     mailserver = smtplib.SMTP(config.smtpserver)

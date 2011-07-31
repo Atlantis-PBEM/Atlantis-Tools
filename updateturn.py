@@ -27,6 +27,11 @@ elif config.frequency == 2:
         newday[2] = newday[2] + 3
     else:
         newday[2] = newday[2] + 4
+elif config.frequency == 3:
+    if day[6] == config.first_day + 4:
+        newday[2] = newday[2] + 3
+    else:
+        newday[2] = newday[2] + 2
 elif config.frequency == 7:
         newday[2] = newday[2] + 1
 else:
