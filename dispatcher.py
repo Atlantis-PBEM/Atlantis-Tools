@@ -199,6 +199,9 @@ while line != '':
         if tester == '#email':
             commandtype = diplo
             gotit = 1
+        if tester == '#mail':
+            commandtype = diplo
+            gotit = 1
         if commandtype != none:
             if commandtype == diplo:
                 if len(token) < 2:
@@ -368,7 +371,7 @@ if commandtype != create and commandtype != diplo:
 
     if commandtype == resend:
         log.write(time.strftime("[%m/%d/%Y %H:%M:%S]", time.localtime(time.time()))+'('+fromaddy+')  resending last report for faction '+faction+'\n')
-        os.system(config.scriptdir+'/putmail.py '+cfgname+' "'+email+'" "Turn Report resend" '+config.prevdir+'/report.'+faction)
+        os.system(config.scriptdir+'/putturn.py '+cfgname+' "'+email+'" "Turn Report resend" '+config.prevdir+'/report.'+faction+' '+config.prevdir+'/template.'+faction)
 
     if commandtype == remind:
         log.write(time.strftime("[%m/%d/%Y %H:%M:%S]", time.localtime(time.time()))+'('+fromaddy+')  reminded of last commands submitted faction '+faction+'\n')
