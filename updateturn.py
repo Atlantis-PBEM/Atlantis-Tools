@@ -24,9 +24,9 @@ if config.frequency == 1:
     newday[2] = newday[2]+7
 elif config.frequency == 2:
     if day[6] == config.first_day:
-        newday[2] = newday[2] + 3
-    else:
         newday[2] = newday[2] + 4
+    else:
+        newday[2] = newday[2] + 3
 elif config.frequency == 3:
     if day[6] == config.first_day + 4:
         newday[2] = newday[2] + 3
@@ -38,7 +38,13 @@ else:
     sys.exit("Don't know how to adjust turn times");
 
 newday2 = time.mktime(newday)
-if day[8] == 0:
+day = time.localtime(newday2)
+newday = list(day)
+newday[3] = config.turn_time[0]
+newday[4] = config.turn_time[1]
+newday[5] = 0
+newday2 = time.mktime(newday)
+if newday[8] == 0:
     tzone = config.time_zone
 else:
     tzone = config.time_zone_dst
